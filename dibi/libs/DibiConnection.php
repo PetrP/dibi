@@ -134,7 +134,7 @@ class DibiConnection extends DibiObject
 	 * Connects to a database.
 	 * @return void
 	 */
-	final protected function connect()
+	final public function connect()
 	{
 		if (!$this->connected) {
 			if ($this->profiler !== NULL) {
