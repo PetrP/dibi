@@ -580,7 +580,8 @@ final class DibiTranslator extends DibiObject
 	public static function substitute($value)
 	{
 		if (strpos($value, ':') !== FALSE) { // provide substitution
-			return preg_replace_callback('#:([^:\s]*):#', array(__CLASS__, 'subCb'), $value);
+			$value = preg_replace_callback('#(?<!\\\\):((.(?<!(?<!\\\\):))*)(?<!\\\\):#', array(__CLASS__, 'subCb'), $value);
+			return str_replace('\:', ':', $value);
 		}
 		return $value;
 	}
@@ -594,8 +595,8 @@ final class DibiTranslator extends DibiObject
 	 */
 	private static function subCb($m)
 	{
-		$m = $m[1];
-		return isset(dibi::$substs[$m]) ? dibi::$substs[$m] : call_user_func(dibi::$substFallBack, $m);
+		$m = str_replace('\:', ':', $m[1]);
+		return str_replace(':', '\:', isset(dibi::$substs[$m]) ? dibi::$substs[$m] : call_user_func(dibi::$substFallBack, $m));
 	}
 
 }
