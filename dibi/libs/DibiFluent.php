@@ -115,6 +115,11 @@ class DibiFluent extends DibiObject implements IDataSource
 	 */
 	public function __call($clause, $args)
 	{
+		try {
+			return parent::__call($clause, $args);
+		} catch (MemberAccessException $e) {
+		}
+
 		$clause = self::_formatClause($clause);
 
 		// lazy initialization
